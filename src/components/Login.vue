@@ -2,6 +2,9 @@
         import {ref,reactive} from 'vue'
         import {useRouter} from 'vue-router'
         const router = useRouter()
+        
+        import{ defineUser} from "../store/userStore.js"
+        let sysUser = defineUser()
 
         import request  from '../utils/request'
 
@@ -46,6 +49,9 @@
            let {data} = await request.post("user/login",loginUser)
            if(data.code == 200 ){
                 alert("登录成功")
+                //获取登陆的用户信息更新在pinia中
+                sysUser.uid = data.data.loginUser.uid
+                sysUser.username = data.data.loginUser.username
                 // 跳转到showSchedule
                 router.push("/showSchedule")
            } else if( data.code == 503){
