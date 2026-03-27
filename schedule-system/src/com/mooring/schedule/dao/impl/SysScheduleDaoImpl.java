@@ -7,6 +7,9 @@ import com.mooring.schedule.pojo.SysSchedule;
 import java.util.List;
 
 public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
+
+
+
     @Override
     public int addSchedule(SysSchedule schedule) {
         String sql = "insert into Sys_schedule values(DEFAULT,?,?,?)";
@@ -19,5 +22,30 @@ public class SysScheduleDaoImpl extends BaseDao implements SysScheduleDao {
         String sql = "select sid,uid,title,completed from sys_schedule";
         List<SysSchedule> scheduleList = baseQuery(SysSchedule.class, sql);
         return scheduleList;
+    }
+
+    @Override
+    public List<SysSchedule> findItemListByUid(int uid) {
+        String sql = "select sid,uid,title,completed from sys_schedule where uid = ?";
+        List<SysSchedule> itemList = baseQuery(SysSchedule.class, sql, uid);
+        return itemList;
+    }
+
+    @Override
+    public Integer addDefault(int uid) {
+        String sql = "insert into sys_schedule values(DEFAULT,?,'请输入日程',0)";
+        return baseUpdate(sql, uid);
+    }
+
+    @Override
+    public Integer updateScheduel(SysSchedule schedule) {
+        String sql = "update sys_schedule set title = ?,completed = ? where sid = ?";
+        return baseUpdate(sql,schedule.getTitle(),schedule.getCompleted(),schedule.getSid());
+    }
+
+    @Override
+    public Integer removeSchedule(int sid) {
+        String sql = "delete from sys_schedule where sid = ?";
+        return baseUpdate(sql,sid);
     }
 }

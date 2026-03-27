@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/user/*")
 public class UserController extends BaseController{
@@ -92,8 +94,11 @@ public class UserController extends BaseController{
             // 用户密码有误,
             result=Result.build(null,ResultCodeEnum.PASSWORD_ERROR);
         }else{
+            Map data = new HashMap();
+            loginUser.setUserPwd("");
+            data.put("loginUser",loginUser);
             // 登录成功
-            result=Result.ok(null);
+            result=Result.ok(data);
         }
 
         WebUtil.writeJson(resp,result);
